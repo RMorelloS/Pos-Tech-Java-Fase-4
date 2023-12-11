@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="tratarCamposBusca()">
+<h1>Listar vídeos!</h1>
+
+<form th:action="@{/listarVideos}" method="get">
+<input type="text" placeholder="Pesquisar por título" name="tituloVideo" id="tituloVideo" th:value="@{{tituloVideo}(tituloVideo=${tituloVideo})}">
+<input type="text" placeholder="Pesquisar por categoria" name="categoriaVideo" id="categoriaVideo" th:value="@{{categoriaVideo}(categoriaVideo=${categoriaVideo})}">
+<input type="date" placeholder="Pesquisar por data de publicação" name="dataPublicacaoVideo" id="dataPublicacaoVideo" th:value="@{{dataPublicacaoVideo}(dataPublicacaoVideo=${dataPublicacaoVideo})}">
+<button type="submit">Assistir</button>
+
+</form>
+
+<div th:if="${not #lists.isEmpty(videos)}">
+    <table>
+        <tr>
+            <th>Titulo</th>
+            <th>Descrição </th>
+            <th>Publicado em </th>
+            <th>Categorias </th>
+            <th>Excluir</th>
+            <th>Assistir</th>
+            <th>Favoritar</th>
+        </tr>
+        <tr th:each="video : ${videos}">
+            <td th:text="${video.titulo}"></td>
+            <td th:text="${video.descricaoVideo}"></td>
+            <td th:text="${video.dataPublicacao}"></td>
+            <td>
+                <span th:each="categoria : ${video.categorias}" th:text="${categoria}"></span>
+            </td>
+            <td>
+                <form th:action="@{/deletarVideos}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="videoId" th:value="${video.videoId}" />
+                    <button type="submit">Deletar</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/abrirVideo}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="videoId" th:value="${video.videoId}" />
+                    <button type="submit">Assistir</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/usuario/adicionarFavorito}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="videoId" th:value="${video.videoId}" />
+                    <button type="submit">Favoritar</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    function tratarCamposBusca(){
+        document.getElementById("tituloVideo").value =
+            decodeURIComponent(document.getElementById("tituloVideo").value);
+        document.getElementById("categoriaVideo").value =
+            decodeURIComponent(document.getElementById("categoriaVideo").value);
+    }
+</script>
+
+</body>
+</html>

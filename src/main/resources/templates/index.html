@@ -1,0 +1,46 @@
+<!--
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+/          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>Reactive Spring Video streaming</title>
+</head>
+<body>
+
+<h1>Upload de Vídeo para S3</h1>
+<form action="/upload-video" method="post">
+    <input type="text" id="videoFile" name="videoFile"/>
+    <input type="submit" value="Enviar para o S3">
+</form>
+
+<h1>Seleção de vídeo</h1>
+<div class="container mt-5">
+    <h2>Video streaming</h2>
+    <video src="video/sample" width="720px" height="480px" controls preload="none">
+    </video>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+/        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>
+-->
+
+<html>
+<body>
+<button onclick="window.location.href = 'listarVideos?tituloVideo=&categoriaVideo=&dataPublicacaoVideo=';"> listar videos </button>
+<button onclick="window.location.href = 'carregarVideos';"> carregar videos </button>
+
+</body>
+</html>
