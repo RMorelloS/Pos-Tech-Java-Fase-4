@@ -27,6 +27,9 @@ public class UserModel {
     private String role;
 
     @DynamoDBAttribute
+    private String email;
+
+    @DynamoDBAttribute
     private ArrayList<UUID> videosFavoritos;
 
 }

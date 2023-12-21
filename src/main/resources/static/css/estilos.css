@@ -1,0 +1,137 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #e50914;
+}
+
+.welcome {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e50914;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #1c1c1c;
+    border-radius: 5px;
+}
+
+input[type="text"], input[type="date"] {
+    flex: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background-color: #fff;
+}
+
+input[type="submit"] {
+    padding: 8px 20px;
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #bf0812;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+th {
+    background-color: #000;
+    color: #fff;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #141414;
+}
+
+tr:hover {
+    background-color: #212121;
+}
+
+
+
+form button {
+    padding: 5px 10px;
+    background-color: #141414;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #e50914;
+}
+
+.disabled-row {
+    opacity: 0.6;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+
+.title-description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.title-description label,
+.title-description input {
+  margin-bottom: 5px;
+}
+
+.title-description input {
+  width: 100%; /* Faz o input ocupar toda a largura */
+}

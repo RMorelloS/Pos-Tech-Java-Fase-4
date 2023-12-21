@@ -2,30 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Youvideos</title>
+    <title>Youvideos - Recomendados</title>
     <link rel="stylesheet" href="/css/estilos.css">
     <link rel="stylesheet" href="/css/navbar.css">
-    <style>
-
-button.favoritado {
-    background-color: yellow;
-    color: black;
-}
-
-button.nao-favoritado {
-    background-color: black;
-    color: white;
-}
-
-    </style>
 </head>
 <body onload="tratarCamposBusca()">
 <div class="container">
-
-
     <div class="navbar">
         <a href="/listarVideos?tituloVideo=&categoriaVideo=&dataPublicacaoVideo=">Listar vídeos</a>
-        <a href="carregarVideos">Carregar vídeos</a>
+        <a href="/carregarVideos">Carregar vídeos</a>
         <div class="dropdown">
             <button class="dropbtn">Para você
                 <i class="fa fa-caret-down"></i>
@@ -35,36 +20,31 @@ button.nao-favoritado {
                 <a href="/usuario/estatisticas">Estatísticas da conta</a>
             </div>
         </div>
+
         <h2 style="color:white; font-size:20px; margin-right:10%; margin-left:auto;">Bem-vindo(a) <span th:text="${usuarioLogado}" style="color:white; font-size:13px;"></span></h2>
 
     </div>
 
     <h1>Youvideos</h1>
 
+    <h1>Videos recomendados para você!</h1>
+    <h2>Com base nas categorias que você curtiu</h2>
 
 
-    <form th:action="@{/listarVideos}" method="get">
-        <input type="text" placeholder="Pesquisar por título" name="tituloVideo" id="tituloVideo" th:value="@{{tituloVideo}(tituloVideo=${tituloVideo})}">
-        <input type="text" placeholder="Pesquisar por categoria" name="categoriaVideo" id="categoriaVideo" th:value="@{{categoriaVideo}(categoriaVideo=${categoriaVideo})}">
-        <input type="date" placeholder="Pesquisar por data de publicação" name="dataPublicacaoVideo" id="dataPublicacaoVideo" th:value="@{{dataPublicacaoVideo}(dataPublicacaoVideo=${dataPublicacaoVideo})}">
-        <input type="submit" value="Buscar">
-    </form>
 
-    <div th:if="${not #lists.isEmpty(videos)}">
+    <div th:if="${videos != null}">
         <table>
             <thead>
             <tr>
-                <th>Título</th>
+                <th>Titulo</th>
                 <th>Descrição</th>
                 <th>Publicado em</th>
                 <th>Categorias</th>
                 <th>Autor</th>
-                <th>Assistir</th>
-                <th>Favoritar</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="video : ${videos}" th:class="${video.autor != usuarioLogado} ? 'disabled-row'">
+            <tr th:each="video : ${videos}">
                 <td th:text="${video.titulo}"></td>
                 <td th:text="${video.descricaoVideo}"></td>
                 <td th:text="${video.dataPublicacao}"></td>
@@ -72,31 +52,22 @@ button.nao-favoritado {
                     <span th:each="categoria : ${video.categorias}" th:text="${categoria}"></span>
                 </td>
                 <td th:text="${video.autor}"></td>
-                <td>
-                    <form th:action="@{/abrirVideo}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="videoId" th:value="${video.videoId}" />
-                        <button type="submit">Assistir</button>
-                    </form>
-                </td>
-                <td>
-                    <form th:action="@{/usuario/adicionarFavorito}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="videoId" th:value="${video.videoId}" />
-                        <button type="submit" th:classappend="${infoUsuario.videosFavoritos.contains(video.videoId)} ? 'favoritado' : 'nao-favoritado'">Favoritar</button>
-                    </form>
-                </td>
             </tr>
             </tbody>
         </table>
     </div>
-</div>
+    <div th:unless="${videos != null}">
+        Carregando lista de vídeos...
+    </div>
 
-<script>
-        function tratarCamposBusca() {
+    <script>
+        function tratarCamposBusca(){
             document.getElementById("tituloVideo").value =
                 decodeURIComponent(document.getElementById("tituloVideo").value);
             document.getElementById("categoriaVideo").value =
                 decodeURIComponent(document.getElementById("categoriaVideo").value);
         }
     </script>
+</div>
 </body>
 </html>

@@ -2,18 +2,25 @@ package com.fiap.postech.fase4.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.server.DefaultServerRedirectStrategy;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.ServerRedirectStrategy;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebFluxSecurity
 public class WebSecurityConfigAdapter{
 
 
@@ -21,31 +28,54 @@ public class WebSecurityConfigAdapter{
     private DynamoDBUserDetailsService userDetailsService;
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+    public UserDetailsRepositoryReactiveAuthenticationManager authenticationProvider() {
+        UserDetailsRepositoryReactiveAuthenticationManager authenticationManager =
+                new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
+        authenticationManager.setPasswordEncoder(passwordEncoder());
+        return authenticationManager;
     }
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/upload").permitAll()
-                        .anyRequest().authenticated()
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
+        URI returnURI = new URI("/listarVideos");
+        return http
+                .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/login").permitAll()
+                        .pathMatchers("/usuario/registrarUsuario").permitAll()
+                        .pathMatchers("/usuario/criarConta").permitAll()
+                        .anyExchange().authenticated()
                 )
-                .formLogin((form) -> form
+                .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/")
-                        .permitAll()
+                        .authenticationSuccessHandler((webFilterExchange, authentication) -> {
+                            ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
+                            ServerHttpRequest request = webFilterExchange.getExchange().getRequest();
+
+                            if (response != null && response.bufferFactory() != null) {
+                                URI returnUrl = URI.create("/listarVideos");
+                                HttpHeaders headers = response.getHeaders();
+                                headers.setLocation(returnUrl);
+                                response.setStatusCode(HttpStatus.SEE_OTHER);
+
+                                return response.setComplete();
+                            } else {
+                                return Mono.error(new IllegalStateException("Response or buffer factory is null."));
+                            }
+                        })
                 )
-                .logout((logout) -> logout.permitAll())
-                .csrf((csrf) -> csrf.disable());
-        return http.build();
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler((webFilterExchange, authentication) ->
+                                Mono.fromRunnable(() ->
+                                        webFilterExchange.getExchange().getResponse().setStatusCode(HttpStatus.OK)
+                                )
+                        )
+                )
+                .csrf((csrf) -> csrf.disable())
+                .build();
     }
+
 
 
     @Bean
@@ -58,15 +88,7 @@ public class WebSecurityConfigAdapter{
 
 
     @Bean
-    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("user")
-//                        .password("password1")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
+    public ReactiveUserDetailsService userDetailsService() {
         return new DynamoDBUserDetailsService();
     }
 }

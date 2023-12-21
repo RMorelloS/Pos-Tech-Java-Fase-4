@@ -2,33 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-  <h1>carregar videos!</h1>
-
-
+    <title>Youvideos</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+  <link rel="stylesheet" href="/css/navbar.css">
 </head>
 
 <body>
-<div class="container mt-5">
-  <h1>Single File Upload Demo!</h1>
-  <form class="mt-3" action="/upload" method="post" enctype="multipart/form-data" onkeydown="cancelarEnterSubmit(event)">
-    <div class="form-group">
-      <label >Título</label>
-      <input type="text" name="titulo"> <br/><br/>
-      <label >Descrição</label>
-      <input type="text" name="descricao"> <br/><br/>
-      <label >Vídeo</label>
-      <input type="file" name="fileToUpload" id="fileToUpload1">
-      <br>
-      <br>
-      <input type="text" id="itemInput" placeholder="Adicionar categoria">
-      <input type="hidden" name="categorias" id="categorias" value="">
 
-      <button type="button" onclick="adicionarItem()"> Adicionar </button>
-      <ul id="listaItens" name="categorias"></ul>
-
+<div class="navbar">
+  <a href="/listarVideos?tituloVideo=&categoriaVideo=&dataPublicacaoVideo=">Listar vídeos</a>
+  <a href="carregarVideos">Carregar vídeos</a>
+  <div class="dropdown">
+    <button class="dropbtn">Para você
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="/usuario/recomendados">Recomendados</a>
+      <a href="/usuario/estatisticas">Estatísticas da conta</a>
     </div>
-    <div class="form-group mt-3">
+  </div>
+  
+</div>
+<div class="container mt-5">
+  <h1>Carregue seu vídeo!</h1>
+  <form  class="mt-3" action="/upload" method="post" enctype="multipart/form-data"
+         onkeydown="cancelarEnterSubmit(event)" style="display:block !important; padding:30px !important;">
+    <div class="form-group">
+      <div class="title-description">
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo">
+        <label for="descricao">Descrição</label>
+        <input type="text" id="descricao" name="descricao">
+      </div>
+      <label for="fileToUpload1">Vídeo</label>
+      <input type="file" name="fileToUpload" id="fileToUpload1">
+      <br><br>
+      <div class="title-description">
+        <label for="titulo">Adicionar categoria</label>
+        <input type="text" id="itemInput">
+        <input type="hidden" name="categorias" id="categorias" value="">
+        <button type="button" onclick="adicionarItem()">Adicionar</button>
+      </div>
+      <ul id="listaItens" name="categorias"></ul>
+    </div>
+    <div class="form-group">
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>

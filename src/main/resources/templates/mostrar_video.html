@@ -1,15 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <meta charset="UTF-8">
     <title>Exibição de Vídeo</title>
 </head>
-<body>
-<h1>Exibição de Vídeo</h1>
+<style>
 
-<video width="640" height="360" controls>
-    <source th:src="@{{videoURL}(videoURL=${videoURL})}" type="video/mp4">
-    Seu navegador não suporta a tag de vídeo.
-</video>
+.navbar a {
+  display: inline-block !important;
+}
+.video-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-caption {
+            text-align: center;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+  </style>
+</head>
+<body>
+
+<div class="container">
+<div class="navbar">
+    <a href="/listarVideos?tituloVideo=&categoriaVideo=&dataPublicacaoVideo=">Listar vídeos</a>
+    <a href="carregarVideos">Carregar vídeos</a>
+    <div class="dropdown">
+        <button class="dropbtn">Para você
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/usuario/recomendados">Recomendados</a>
+            <a href="/usuario/estatisticas">Estatísticas da conta</a>
+        </div>
+    </div>
+    <h2 style="color:white; font-size:20px; margin-right:10%; margin-left:auto;">Bem-vindo(a) <span th:text="${usuarioLogado}" style="color:white; font-size:13px;"></span></h2>
+
+</div>
+
+
+
+<div class="container text-center mt-5">
+    <h2><span th:text="${video.titulo}"></span></h2>
+</div>
+
+<div class="video-container">
+    <div class="video-wrapper">
+        <video width="640" height="360" controls>
+            <source th:src="@{{videoURL}(videoURL=${videoURL})}" type="video/mp4">
+            Seu navegador não suporta a tag de vídeo.
+        </video>
+    </div>
+    <div class="video-caption">
+        Autor:  <span th:text="${video.autor}"></span>
+        <br>
+        Publicado em: <span th:text="${video.dataPublicacao}"></span>
+        <br>
+        <span th:text="${video.visualizacoesUsuarios}"></span> visualizações
+    </div>
+</div>
+</div>
 </body>
 </html>

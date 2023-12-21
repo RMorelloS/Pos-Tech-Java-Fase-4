@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Youvideos - Estatísticas</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+</head>
+<body onload="tratarCamposBusca()">
+
+<div class="navbar">
+  <a href="/listarVideos?tituloVideo=&categoriaVideo=&dataPublicacaoVideo=">Listar vídeos</a>
+  <a href="/carregarVideos">Carregar vídeos</a>
+  <div class="dropdown">
+    <button class="dropbtn">Para você
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="/usuario/recomendados">Recomendados</a>
+      <a href="/usuario/estatisticas">Estatísticas da conta</a>
+    </div>
+  </div>
+  <h2 style="color:white; font-size:20px; margin-right:10%; margin-left:auto;">Bem-vindo(a) <span th:text="${usuarioLogado}" style="color:white; font-size:13px;"></span></h2>
+
+</div>
+
+<h1>Estatísticas de seus vídeos</h1>
+
+
+<div th:if="${estatisticas != null}">
+
+  <span th:text="${estatisticas.qtdeVideos}"></span>
+
+  <span th:text="${estatisticas.mediaVisualizacoes}"></span>
+
+  <span th:text="${estatisticas.qtdeVideosFavoritados}"></span>
+
+</div>
+
+<div th:unless="${estatisticas != null}">
+  Carregando estatisticas
+</div>
+
+<div th:if="${not #lists.isEmpty(videos)}">
+  <table>
+    <thead>
+    <tr>
+      <th>Título</th>
+      <th>Descrição</th>
+      <th>Publicado em</th>
+      <th>Categorias</th>
+      <th>Autor</th>
+      <th>Visualizações</th>
+      <th>Favoritos</th>
+      <th>Excluir</th>
+      <th>Assistir</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="video : ${videos}" th:class="${video.autor != usuarioLogado} ? 'disabled-row'">
+      <td th:text="${video.titulo}"></td>
+      <td th:text="${video.descricaoVideo}"></td>
+      <td th:text="${video.dataPublicacao}"></td>
+      <td>
+        <span th:each="categoria : ${video.categorias}" th:text="${categoria}"></span>
+      </td>
+      <td th:text="${video.autor}"></td>
+      <td th:text="${video.visualizacoesUsuarios}"></td>
+      <td th:text="${video.qtdeFavoritos}"></td>
+      <td>
+        <form th:action="@{/deletarVideos}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="videoId" th:value="${video.videoId}" />
+          <button type="submit" th:disabled="${video.autor != usuarioLogado}">Deletar</button>
+        </form>
+      </td>
+      <td>
+        <form th:action="@{/abrirVideo}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="videoId" th:value="${video.videoId}" />
+          <button type="submit">Assistir</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+
+
+</body>
+</html>

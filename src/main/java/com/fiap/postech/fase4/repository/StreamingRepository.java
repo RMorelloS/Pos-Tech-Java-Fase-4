@@ -2,22 +2,13 @@ package com.fiap.postech.fase4.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.document.Attribute;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.fiap.postech.fase4.model.VideoModel;
-import com.fiap.postech.fase4.service.VideoUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class StreamingRepository {
@@ -41,23 +32,16 @@ public class StreamingRepository {
     }
 
 
-    public String delete(UUID videoId){
+    public String delete(UUID videoId, String usuarioLogado){
         VideoModel video = dynamoDBMapper.load(VideoModel.class, videoId);
-        dynamoDBMapper.delete(video);
-        return "Video deletado com sucesso!";
-    }
-    public String update(VideoModel video){
-
-        try {
-            this.delete(video.getVideoId());
-           salvarVideo(video);
-
-        }catch(Exception e){
-            throw e;
+        if(!video.getAutor().equals(usuarioLogado)){
+            return "Usuário sem permissão de excluir vídeo de outros usuários!";
+        }else {
+            dynamoDBMapper.delete(video);
         }
-        return "Atualizado com sucesso!";
-    }
+        return "Video deletado com sucesso!";
 
+    }
     public List<VideoModel> getVideos(String tituloVideo,
                                       String categoriaVideo,
                                       LocalDate dataPublicacaoVideo) {
@@ -101,4 +85,46 @@ public class StreamingRepository {
         return dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression);
     }
 
+    public List<VideoModel> obterVideosPorCategorias(List<Map.Entry<String, Integer>> listaCategorias) {
+
+        List<VideoModel> videos = new ArrayList<>();
+        for(var categoria : listaCategorias) {
+            DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
+
+            Map<String, String> expressionAttributeNames = new HashMap<>();
+            Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+
+            expressionAttributeNames.put("#attr", "categoriasTratado");
+            expressionAttributeValues.put(":val", new AttributeValue(categoria.getKey().toLowerCase()));
+            String filterExpression = "attribute_exists(#attr) AND contains(#attr, :val)";
+
+            dynamoDBScanExpression = dynamoDBScanExpression
+                    .withExpressionAttributeNames(expressionAttributeNames)
+                    .withExpressionAttributeValues(expressionAttributeValues)
+                    .withFilterExpression(filterExpression);
+
+            videos.addAll(dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression));
+        }
+        return videos;
+    }
+
+    public List<VideoModel> getVideosByUser(String user) {
+        List<VideoModel> videos = new ArrayList<>();
+        DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
+
+        Map<String, String> expressionAttributeNames = new HashMap<>();
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+
+        expressionAttributeNames.put("#attr", "autor");
+        expressionAttributeValues.put(":val", new AttributeValue(user));
+        String filterExpression = "attribute_exists(#attr) AND contains(#attr, :val)";
+
+        dynamoDBScanExpression = dynamoDBScanExpression
+                .withExpressionAttributeNames(expressionAttributeNames)
+                .withExpressionAttributeValues(expressionAttributeValues)
+                .withFilterExpression(filterExpression);
+
+        videos.addAll(dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression));
+        return videos;
+    }
 }

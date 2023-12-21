@@ -57,6 +57,12 @@ public class VideoModel {
     @DynamoDBAttribute
     private int visualizacoesUsuarios;
 
+    @DynamoDBAttribute
+    private int qtdeFavoritos;
+
+    @DynamoDBAttribute
+    private String autor;
+
     public VideoModel() {
 
     }
