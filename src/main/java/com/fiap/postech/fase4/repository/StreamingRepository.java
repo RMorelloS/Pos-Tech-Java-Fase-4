@@ -103,13 +103,16 @@ public class StreamingRepository {
                     .withExpressionAttributeValues(expressionAttributeValues)
                     .withFilterExpression(filterExpression);
 
-            videos.addAll(dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression));
+
+           var lista = dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression);
+           for (var item : lista){
+               videos.add(item);
+           }
         }
         return videos;
     }
 
     public List<VideoModel> getVideosByUser(String user) {
-        List<VideoModel> videos = new ArrayList<>();
         DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
 
         Map<String, String> expressionAttributeNames = new HashMap<>();
@@ -124,7 +127,12 @@ public class StreamingRepository {
                 .withExpressionAttributeValues(expressionAttributeValues)
                 .withFilterExpression(filterExpression);
 
-        videos.addAll(dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression));
+        var resultado = dynamoDBMapper.scan(VideoModel.class, dynamoDBScanExpression);
+        List<VideoModel> videos = new ArrayList<>();
+        for(var item : resultado){
+            videos.add(item);
+        }
+
         return videos;
     }
 }

@@ -27,6 +27,8 @@ public class VideoUploadService implements IVideoUploadService{
 
     @Autowired
     private S3Configuration s3Configuration;
+
+
     private S3Client s3Client;
 
 
@@ -35,7 +37,7 @@ public class VideoUploadService implements IVideoUploadService{
         s3Configuration = new S3Configuration();
         bucketName = "postech-streaming-service";
     }
-    public void delete(String videoId) {
+    public String delete(String videoId) {
 
         try {
             S3Client s3Client = s3Configuration.buildS3Client();
@@ -44,12 +46,13 @@ public class VideoUploadService implements IVideoUploadService{
                     .key(videoId)
                     .build();
             s3Client.deleteObject(deleteObjectRequest);
+            return "Deletado com sucesso!";
         }catch(Exception e){
-            throw e;
+            return e.getMessage();
         }
     }
 
-    public Flux<String> uploadObject(Mono<FilePart> video, UUID videoId) {
+    public Mono<String> uploadObject(Mono<FilePart> video, UUID videoId) {
         try {
 
             S3Client s3Client = s3Configuration.buildS3Client();
@@ -89,9 +92,9 @@ public class VideoUploadService implements IVideoUploadService{
 
 
 
-            return Flux.just("Carregado com sucesso!");
+            return Mono.just("Carregado com sucesso!");
         }catch(Exception e){
-            return Flux.error(e);
+            return Mono.error(e);
         }
     }
 

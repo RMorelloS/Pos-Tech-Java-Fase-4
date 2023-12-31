@@ -5,6 +5,8 @@ import com.fiap.postech.fase4.model.UserModel;
 import com.fiap.postech.fase4.model.VideoModel;
 import com.fiap.postech.fase4.repository.StreamingRepository;
 import com.fiap.postech.fase4.repository.UserRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -23,6 +25,8 @@ import static com.fiap.postech.fase4.service.StatusFavoritoEnum.StatusFavorito.R
 @Service
 public class UserService {
     @Autowired
+    @Getter
+    @Setter
     private UserRepository userRepository;
 
     @Autowired
@@ -92,7 +96,8 @@ public class UserService {
         novoUsuario.setUserLogin(login);
         novoUsuario.setUserKey(chave);
         novoUsuario.setRole("USER");
-        return Mono.just(userRepository.criarUsuario(novoUsuario));
+        var retorno = userRepository.criarUsuario(novoUsuario);
+        return Mono.just(retorno);
     }
 
     public Mono<EstatisticasUsuarioModel> obterEstatisticas() {
@@ -117,7 +122,7 @@ public class UserService {
         return Math.floorDiv(qtdeVisualizacoes, (int) listaVideos.stream().count());
     }
 
-    private int contaFavoritos(List<VideoModel> listaVideos) {
+    public int contaFavoritos(List<VideoModel> listaVideos) {
         int qtdeFavoritos = 0;
         for(var video : listaVideos){
             if(video.getQtdeFavoritos() != 0) qtdeFavoritos++;

@@ -41,6 +41,7 @@
                 <th>Publicado em</th>
                 <th>Categorias</th>
                 <th>Autor</th>
+                <th>Assistir</th>
             </tr>
             </thead>
             <tbody>
@@ -52,6 +53,12 @@
                     <span th:each="categoria : ${video.categorias}" th:text="${categoria}"></span>
                 </td>
                 <td th:text="${video.autor}"></td>
+                <td>
+                    <form th:action="@{/abrirVideo}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="videoId" th:value="${video.videoId}" />
+                        <button type="submit">Assistir</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

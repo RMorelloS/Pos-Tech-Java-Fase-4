@@ -5,6 +5,12 @@
   <title>Youvideos - Estatísticas</title>
   <link rel="stylesheet" href="/css/estilos.css">
   <link rel="stylesheet" href="/css/navbar.css">
+  <style>
+    h2 {
+      font-size:15px;
+      color:white;
+    }
+  </style>
 </head>
 <body onload="tratarCamposBusca()">
 
@@ -29,11 +35,16 @@
 
 <div th:if="${estatisticas != null}">
 
-  <span th:text="${estatisticas.qtdeVideos}"></span>
 
-  <span th:text="${estatisticas.mediaVisualizacoes}"></span>
 
-  <span th:text="${estatisticas.qtdeVideosFavoritados}"></span>
+  <form>
+    <h2>Total de vídeos: <span th:text="${estatisticas.qtdeVideos}"></span></h2>
+
+    <h2>Média de visualizações: <span th:text="${estatisticas.mediaVisualizacoes}"></span></h2>
+
+    <h2>Total de favoritos: <span th:text="${estatisticas.qtdeVideosFavoritados}"></span></h2>
+  </form>
+
 
 </div>
 

@@ -29,7 +29,7 @@ public class StreamingService {
 
     private  final Path basePath = Paths.get("./src/main/resources/videos/");
 
-    public String salvarVideo(String titulo, String descricao,
+    public VideoModel salvarVideo(String titulo, String descricao,
                               Mono<FilePart> video, String categorias, String autor) {
 
         List<String> listaCategorias = Arrays.asList(categorias.split(";"));
@@ -56,7 +56,7 @@ public class StreamingService {
 
         videoUploadService.uploadObject(video, videoModel.getVideoId());
 
-        return "listar_videos";
+        return videoModel;
     }
 
     public VideoModel getVideoById(UUID videoId){
@@ -80,14 +80,14 @@ public class StreamingService {
         if (!categorias.isEmpty()) {
             categoriasOrdenado = new ArrayList<>(categorias.entrySet());
 
-            // Ordenação da lista usando um comparador personalizado
-            Collections.sort(categoriasOrdenado, Comparator.comparingInt(Map.Entry::getValue));
-
+            Collections.sort(categoriasOrdenado, Comparator.<Map.Entry<String, Integer>>comparingInt(Map.Entry::getValue).reversed());
         }
          categoriasOrdenado = categoriasOrdenado.subList(0, Math.min(2, categoriasOrdenado.size()));
         return categoriasOrdenado;
     }
-    public List<VideoModel> getVideos(String tituloVideo, String categoriaVideo, LocalDate dataPublicacaoVideo) {
+    public List<VideoModel> getVideos(String tituloVideo,
+                                      String categoriaVideo,
+                                      LocalDate dataPublicacaoVideo) {
         return streamingRepository.getVideos(tituloVideo, categoriaVideo, dataPublicacaoVideo);
     }
 
@@ -106,15 +106,16 @@ public class StreamingService {
         return streamingRepository.obterVideosPorCategorias(listaCategorias);
     }
 
-    public void atualizarViews(String videoId) {
+    public VideoModel atualizarViews(String videoId) {
         var video = streamingRepository.getVideoById(UUID.fromString(videoId));
         if(video != null) {
             video.setVisualizacoesUsuarios(video.getVisualizacoesUsuarios() + 1);
         }
         streamingRepository.salvarVideo(video);
+        return video;
     }
 
-    public void atualizaFavoritos(String videoId, StatusFavoritoEnum.StatusFavorito statusFavorito) {
+    public VideoModel atualizaFavoritos(String videoId, StatusFavoritoEnum.StatusFavorito statusFavorito) {
         var video = getVideoById(UUID.fromString(videoId));
         if(statusFavorito == StatusFavoritoEnum.StatusFavorito.ADICIONAR_FAVORITO){
             video.setQtdeFavoritos(video.getQtdeFavoritos() + 1);
@@ -122,5 +123,6 @@ public class StreamingService {
             video.setQtdeFavoritos(video.getQtdeFavoritos() - 1);
         }
         streamingRepository.salvarVideo(video);
+        return video;
     }
 }

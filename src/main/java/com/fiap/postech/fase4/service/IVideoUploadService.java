@@ -7,5 +7,5 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public interface IVideoUploadService {
-    public Flux<String> uploadObject(Mono<FilePart> video, UUID videoId);
+    public Mono<String> uploadObject(Mono<FilePart> video, UUID videoId);
 }
