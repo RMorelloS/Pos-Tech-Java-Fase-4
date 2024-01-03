@@ -67,6 +67,11 @@ Filtro por título:
 Filtro por data de publicação:
 ![image](https://github.com/RMorelloS/fase4/assets/32580031/a7e9dc2d-065c-4182-8803-92a0a70cb149)
 
+OBS: é possível aplicar vários filtros simultaneamente:
+
+![image](https://github.com/RMorelloS/fase4/assets/32580031/6a764933-ff16-4b3b-b55c-32ad7f3d9a42)
+
+
 É possível favoritar/desfavoritar os vídeos, que aparecerão com o botão "Favoritar" em amarelo caso estejam favoritados:
 
 ![image](https://github.com/RMorelloS/fase4/assets/32580031/700fee13-ca2d-4c70-963c-0198a3194185)
