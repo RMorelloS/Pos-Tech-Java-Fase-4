@@ -10,15 +10,8 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
-import java.net.URI;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/usuario")

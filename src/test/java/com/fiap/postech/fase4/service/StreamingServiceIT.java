@@ -1,40 +1,17 @@
 package com.fiap.postech.fase4.service;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.fiap.postech.fase4.config.S3Configuration;
-import com.fiap.postech.fase4.config.UserModelGenerator;
 import com.fiap.postech.fase4.config.VideoModelGenerator;
-import com.fiap.postech.fase4.model.UserModel;
 import com.fiap.postech.fase4.model.VideoModel;
 import com.fiap.postech.fase4.repository.StreamingRepository;
-import com.fiap.postech.fase4.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.codec.multipart.FilePart;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 @SpringBootTest
 public class StreamingServiceIT {
 
@@ -141,7 +118,5 @@ public class StreamingServiceIT {
                 StatusFavoritoEnum.StatusFavorito.REMOVER_FAVORITO);
         assertEquals(1, resultado.getQtdeFavoritos());
     }
-
-
 
 }

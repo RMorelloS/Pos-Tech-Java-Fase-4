@@ -113,7 +113,7 @@ public class UserService {
 
     }
 
-    private int mediaVisualizacoes(List<VideoModel> listaVideos) {
+    public int mediaVisualizacoes(List<VideoModel> listaVideos) {
         int qtdeVisualizacoes = 0;
         for(var video : listaVideos){
             qtdeVisualizacoes += video.getVisualizacoesUsuarios();

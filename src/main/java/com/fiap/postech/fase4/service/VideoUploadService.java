@@ -66,7 +66,6 @@ public class VideoUploadService implements IVideoUploadService{
                         .key(videoId.toString())
                         .build();
 
-                //TODO ajustar o tamanho dinamicamente
                 return filePart.content()
                         .buffer(1024 * 1024*512)
                         .flatMapSequential(bufferList -> {
