@@ -6,9 +6,9 @@ Foram desenvolvidas as seguintes funcionalidades:
 
 1. Cadastro de usuário
 2. Upload de vídeos
-3. Vídeos recomendados
-4. Estatísticas da conta
-5. Listagem e visualização de vídeos de outros usuários
+3. Listagem e visualização de vídeos de outros usuários
+4. Vídeos recomendados
+5. Estatísticas da conta
 6. Testes unitário e de integração, com cobertura de 91% do código
    
 Foram utilizadas as seguintes tecnologias/técnicas:
@@ -40,4 +40,18 @@ Inserir um usuário, senha e e-mail e selecionar a opção "Criar conta"
 Realizar login na plataforma com o usuário criado previamente:
 
 ![image](https://github.com/RMorelloS/fase4/assets/32580031/5d06e850-d489-40af-a429-34f7a9df6200)
+
+Na tela de listagem de vídeos, selecionar a opção "Carregar vídeos" no menu superior:
+
+![image](https://github.com/RMorelloS/fase4/assets/32580031/70621ebf-09d8-419c-a7e4-e899b59dc096)
+
+Inserir as informações sobre o vídeo. É possível adicionar quantas categorias forem desejadas, escrevendo cada categoria e selecionando o opção "Adicionar". As categorias são exibidas numa lista sobre o botão de Submit.
+
+![image](https://github.com/RMorelloS/fase4/assets/32580031/72c5a36f-bb5e-4363-9a44-d278e1c56199)
+
+Uma vez carregado o vídeo, ele estará disponível para outros usuários interagirem.
+
+![image](https://github.com/RMorelloS/fase4/assets/32580031/7180c615-fcb5-4b56-a474-47c0c2004fc1)
+
+
 
