@@ -108,7 +108,7 @@ Por fim, foram desenvolvidos 66 testes, dentre testes unitários e de integraç�
 
 ![image](https://github.com/RMorelloS/fase4/assets/32580031/d3c49b50-d056-4780-a3ed-3deb87dfac37)
 
-Foram desenvolvidos testes para controlador, service e repository:
+Foram desenvolvidos testes para controlador, service, repository e model:
 
 ![image](https://github.com/RMorelloS/fase4/assets/32580031/83178317-dce2-4db8-b299-4071c40fda44)
 
