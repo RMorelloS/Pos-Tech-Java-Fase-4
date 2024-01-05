@@ -95,6 +95,7 @@ public class UserService {
         novoUsuario.setEmail(email);
         novoUsuario.setUserLogin(login);
         novoUsuario.setUserKey(chave);
+        novoUsuario.setVideosFavoritos(new ArrayList<>());
         novoUsuario.setRole("USER");
         var retorno = userRepository.criarUsuario(novoUsuario);
         return Mono.just(retorno);
